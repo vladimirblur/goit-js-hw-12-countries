@@ -11,12 +11,10 @@ const ERROR_MESSAGE = 'Oops,  this country does not exist'
 
 
 export default function onCountriesSearch({ target: { value } }) {
-  // e.preventDefault()
-
-  const searchQuery = value.trim();
+  
+  let searchQuery = value.trim();
 
   if (searchQuery.length === 0) {
-    console.log('empty')
     refs.countryListRef.innerHTML = '';
     return;
     }
@@ -26,7 +24,8 @@ export default function onCountriesSearch({ target: { value } }) {
  
 }
 
-function onFetchError() {
+function onFetchError(error) {
+   console.log(error)
   return  notify('error', ERROR_MESSAGE); 
 }
 
@@ -38,15 +37,17 @@ refs.countriesInput.addEventListener('input', debounce(onCountriesSearch, 500));
 
 const updateView = (arr) => {
    if (arr.length >= 2 & arr.length <= 10) {
-      renderCountryMarkup(CountryList, arr)
-     clearCountrySearchInput()
+     renderCountryMarkup(CountryList, arr)
+    setTimeout(clearCountrySearchInput, 6000);
+     
      return;
       
     };
     if (arr.length === 1) {
       renderCountryMarkup(countryCard, arr)
-      clearCountrySearchInput()
+      setTimeout(clearCountrySearchInput, 6000);
       return;
     }
  notify('error', INFO_MESSAGE);
 }
+

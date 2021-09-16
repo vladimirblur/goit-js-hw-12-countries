@@ -21,20 +21,9 @@ export default function onCountriesSearch({ target: { value } }) {
     return;
     }
 
-  fetchCountries(searchQuery).then(arr => {
-    if (arr.length >= 2 & arr.length <= 10) {
-      renderCountryMarkup(CountryList, arr)
-      clearCountrySearchInput()
-      
-    };
-    if (arr.length === 1) {
-      renderCountryMarkup(countryCard, arr)
-      clearCountrySearchInput()
-    }
+  fetchCountries(searchQuery).then(updateView).catch(onFetchError)
 
-  }).catch(onFetchError)
-
-  notify('error', INFO_MESSAGE);
+ 
 }
 
 function onFetchError() {
@@ -46,3 +35,18 @@ function clearCountrySearchInput() {
 }
 
 refs.countriesInput.addEventListener('input', debounce(onCountriesSearch, 500));
+
+const updateView = (arr) => {
+   if (arr.length >= 2 & arr.length <= 10) {
+      renderCountryMarkup(CountryList, arr)
+     clearCountrySearchInput()
+     return;
+      
+    };
+    if (arr.length === 1) {
+      renderCountryMarkup(countryCard, arr)
+      clearCountrySearchInput()
+      return;
+    }
+ notify('error', INFO_MESSAGE);
+}
